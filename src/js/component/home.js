@@ -47,6 +47,8 @@ export function App() {
 	let deleteTask = i => {
 		let newList = todoList.filter((element, index) => index !== i);
 		updateTodos(newList);
+		// console.log(`To do list length is: ${todoList.length}`);
+		// if (todoList.length !== 1) {
 		fetch(url, {
 			method: "PUT",
 			body: JSON.stringify(newList),
@@ -63,10 +65,50 @@ export function App() {
 			.catch(error => {
 				console.log(error);
 			});
+		// } else {
+		// 	fetch(url, {
+		// 		method: "PUT",
+		// 		body: JSON.stringify([]),
+		// 		headers: {
+		// 			"Content-Type": "application/json"
+		// 		}
+		// 	})
+		// 		.then(resp => {
+		// 			return resp.json();
+		// 		})
+		// 		.then(data => {
+		// 			console.log(data);
+		// 		})
+		// 		.catch(error => {
+		// 			console.log(error);
+		// 		});
+		// }
 	};
 
 	let clearTask = () => {
-		console.log("u are " + todoList.length + " times gay");
+		updateTodos([]);
+		fetch(url, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json"
+			}
+		})
+			.then(resp => {
+				return resp.json();
+			})
+			.then(data => {
+				console.log(data);
+				fetch(url, {
+					method: "POST",
+					body: JSON.stringify([]),
+					headers: {
+						"Content-Type": "application/json"
+					}
+				});
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 
 	// let saveTask = () => {
@@ -113,12 +155,12 @@ export function App() {
 			</ul>
 			<p>
 				<strong>{todoList.length} items left</strong>
-				<button
+				{/* <button
 					className="btn btn-primary float-right"
 					// onClick={saveTask}
 				>
 					Save all tasks
-				</button>
+				</button> */}
 				<button
 					className="btn btn-danger float-right"
 					onClick={clearTask}>
